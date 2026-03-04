@@ -63,39 +63,12 @@ const fmt = n => `¥${(n||0).toLocaleString()}`;
 
 const mkData = pf => ({
   sales: MONTHS.map(m => ({
-    month: m, amazon: Math.floor(Math.random()*500000)+200000,
-    sns: Math.floor(Math.random()*150000)+30000,
-    support: Math.floor(Math.random()*200000)+80000,
-    other: Math.floor(Math.random()*80000)+10000,
+    month: m, amazon: 0, sns: 0, support: 0, other: 0,
   })),
-  expenses: [
-    { id:`${pf}-1`, date:"2025-03-01", desc:"商品仕入れ（Amazon FBA）", amt:150000, src:"amazon", rcpt:true, memo:"", origin:"manual" },
-    { id:`${pf}-2`, date:"2025-03-03", desc:"FBA納品送料 ヤマト運輸", amt:8500, src:"amazon", rcpt:true, memo:"", origin:"manual" },
-    { id:`${pf}-3`, date:"2025-03-05", desc:"Amazon販売手数料", amt:45000, src:"amazon", rcpt:true, memo:"3月分", origin:"amazon" },
-    { id:`${pf}-4`, date:"2025-03-07", desc:"Instagram広告 META", amt:30000, src:"sns", rcpt:true, memo:"", origin:"creditcard" },
-    { id:`${pf}-5`, date:"2025-03-10", desc:"セラースプライト月額", amt:5980, src:"amazon", rcpt:true, memo:"", origin:"creditcard" },
-    { id:`${pf}-6`, date:"2025-03-12", desc:"通信費 NTTドコモ", amt:4500, src:"amazon", rcpt:true, memo:"家事按分50%", origin:"creditcard" },
-    { id:`${pf}-7`, date:"2025-03-15", desc:"外注費 クラウドワークス", amt:50000, src:"sns", rcpt:false, memo:"請求書待ち", origin:"manual" },
-    { id:`${pf}-8`, date:"2025-03-18", desc:"交通費 JR東日本", amt:3200, src:"amazon", rcpt:true, memo:"", origin:"manual" },
-    { id:`${pf}-9`, date:"2025-03-20", desc:"梱包資材 ダンボールワン", amt:4800, src:"amazon", rcpt:true, memo:"", origin:"creditcard" },
-    { id:`${pf}-10`, date:"2025-03-22", desc:"Notion月額 サブスク", amt:2980, src:"support", rcpt:true, memo:"", origin:"creditcard" },
-  ],
-  inventory: [
-    { id:`${pf}-i1`, sku:"AMZ-001", name:"ワイヤレスイヤホン", cost:1200, price:3980, fba:120, self:30, rp:50 },
-    { id:`${pf}-i2`, sku:"AMZ-002", name:"スマホスタンド", cost:380, price:1580, fba:250, self:50, rp:100 },
-    { id:`${pf}-i3`, sku:"AMZ-003", name:"LEDデスクライト", cost:2500, price:6980, fba:40, self:5, rp:30 },
-    { id:`${pf}-i4`, sku:"AMZ-004", name:"USB-Cハブ", cost:1800, price:4280, fba:180, self:20, rp:60 },
-    { id:`${pf}-i5`, sku:"AMZ-005", name:"防水ポーチ", cost:450, price:1980, fba:10, self:5, rp:50 },
-  ],
-  bank: [
-    { id:`${pf}-b1`, date:"2025-03-01", name:"Amazon入金（2月分）", amount: 580000, type: "income" },
-    { id:`${pf}-b2`, date:"2025-03-05", name:"クレカ引落（楽天カード）", amount: -245000, type: "expense" },
-    { id:`${pf}-b3`, date:"2025-03-10", name:"バックサポート報酬入金", amount: 150000, type: "income" },
-    { id:`${pf}-b4`, date:"2025-03-15", name:"家賃（家事按分30%）", amount: -36000, type: "expense" },
-    { id:`${pf}-b5`, date:"2025-03-20", name:"SNS案件入金", amount: 85000, type: "income" },
-    { id:`${pf}-b6`, date:"2025-03-25", name:"仕入代金 振込", amount: -180000, type: "expense" },
-  ],
-  bankBalance: 1250000,
+  expenses: [],
+  inventory: [],
+  bank: [],
+  bankBalance: 0,
 });
 
 // ===== メイン =====
