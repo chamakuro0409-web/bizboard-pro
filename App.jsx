@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useCallback } from "react";
+import React, { useState, useMemo, useRef, useCallback } from "react";
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area, LineChart, Line } from "recharts";
 import { Plus, Trash2, Edit3, Package, BookOpen, TrendingUp, Calculator, Download, AlertTriangle, CheckCircle, Search, X, Save, ArrowUpRight, ArrowDownRight, Users, Upload, Zap, HelpCircle, CreditCard, Building, Wallet, FileSpreadsheet, RefreshCw, ArrowRight, Info, ChevronDown } from "lucide-react";
 
@@ -291,8 +291,8 @@ export default function App() {
         {acct==="assistant"&&<div style={{background:"linear-gradient(135deg,#EBF5FF,#E0EDFF)",borderRadius:9,padding:"10px 16px",border:"1px solid #B3D4FC",display:"flex",alignItems:"center",gap:8,fontSize:12}}><Users size={15} color="#2563EB"/><span style={{color:"#1E40AF",fontWeight:600}}>現在 <strong>{target==="owner"?"👑 事業主":"🛠️ 自分"}</strong> のデータを管理中</span></div>}
 
         <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
-          <Card title="今月の売上" value={fmt(totInc)} icon="💰" color="#FF9900" trend="up" tv="+12.3%"/>
-          <Card title="今月の経費" value={fmt(totExp)} icon="📊" color="#EF4444" trend="down" tv="-5.2%"/>
+          <Card title="今月の売上" value={fmt(totInc)} icon="💰" color="#FF9900" trend={totInc>0?"up":null} tv={totInc>0?"+12.3%":""}/>
+          <Card title="今月の経費" value={fmt(totExp)} icon="📊" color="#EF4444" trend={totExp>0?"down":null} tv={totExp>0?"-5.2%":""}/>
           <Card title="粗利益" value={fmt(profit)} icon="✨" color="#22C55E" sub={`利益率 ${profRate}%`}/>
           <Card title="口座残高" value={fmt(cur.bankBalance)} icon="🏦" color="#5856D6" sub="事業用口座"/>
           <Card title="在庫資産" value={fmt(invVal)} icon="📦" color="#4A90D9" sub={lowStock.length?`⚠️ ${lowStock.length}件要発注`:"正常"}/>
@@ -639,9 +639,9 @@ export default function App() {
   const TaxTab = () => {
     const aInc=cur.sales.reduce((s,d)=>s+d.amazon+d.sns+d.support+d.other,0);const aExp=totExp*12;const bl=taxS.blue?650000:100000;const id=taxS.ideco*12;const mu=taxS.mutual*12;const ba=480000;const sp=taxS.spouse?380000:0;const hb=aExp*(taxS.home/100)*0.3;
     const tx=Math.max(0,aInc-aExp-bl-id-mu-ba-sp-taxS.medical-taxS.furu-hb);
-    const ct=i=>{const b=[{l:1950000,r:.05,d:0},{l:3300000,r:.10,d:97500},{l:6950000,r:.20,d:427500},{l:9000000,r:.23,d:636000},{l:18000000,r:.33,d:1536000},{l:40000000,r:.40,d:2796000},{l:Infinity,r:.45,d:4796000}];return Math.floor(i*b.find(x=>i<=x.l).r-b.find(x=>i<=x.l).d);};
+    const ct=i=>{if(!i||i<=0)return 0;const b=[{l:1950000,r:.05,d:0},{l:3300000,r:.10,d:97500},{l:6950000,r:.20,d:427500},{l:9000000,r:.23,d:636000},{l:18000000,r:.33,d:1536000},{l:40000000,r:.40,d:2796000},{l:Infinity,r:.45,d:4796000}];const br=b.find(x=>i<=x.l);if(!br)return 0;return Math.floor(i*br.r-br.d);};
     const it=ct(tx);const rt=Math.floor(tx*0.10);const tt=it+rt;const er=aInc>0?((tt/aInc)*100).toFixed(1):0;
-    const tw=Math.max(0,aInc-aExp-ba-100000);const sv=ct(tw)+Math.floor(tw*0.10)-tt;
+    const tw=Math.max(0,aInc-aExp-ba-100000);const ttw=ct(tw)+Math.floor(tw*0.10);const sv=Math.max(0,ttw-tt);
     const ded=[{n:"青色申告特別控除",v:bl},ba>0&&{n:"基礎控除",v:ba},id>0&&{n:"iDeCo",v:id},mu>0&&{n:"小規模企業共済",v:mu},sp>0&&{n:"配偶者控除",v:sp},taxS.medical>0&&{n:"医療費控除",v:taxS.medical},taxS.furu>0&&{n:"ふるさと納税",v:taxS.furu},hb>0&&{n:"家事按分",v:Math.floor(hb)}].filter(Boolean);
     const Tgl=({v,fn,l})=><div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><span style={{fontSize:12,fontWeight:600}}>{l}</span><button onClick={()=>fn(!v)} style={{width:42,height:22,borderRadius:11,border:"none",cursor:"pointer",background:v?"#22C55E":"#ddd",position:"relative"}}><div style={{width:16,height:16,borderRadius:8,background:"#fff",position:"absolute",top:3,left:v?23:3,transition:"0.2s",boxShadow:"0 1px 2px rgba(0,0,0,0.2)"}}/></button></div>;
     return(
